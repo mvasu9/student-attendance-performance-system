@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Low Attendance</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>⚠️ Low Attendance</h1>
+
+    <p style="text-align:center;">
+        Students with attendance below 75%
+    </p>
+
+
+    <div class="page-actions">
+
+        <a href="/attendance_report">
+            <button type="button">
+                Attendance Report
+            </button>
+        </a>
+
+        <a href="/attendance">
+            <button type="button">
+                Mark Attendance
+            </button>
+        </a>
+
+        <a href="/faculty_dashboard">
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="lowAttendanceSearch"
+            placeholder="Search by Student ID, Name, Subject..."
+            onkeyup="searchLowAttendance()"
+        >
+
+    </div>
+
+
+    {% if records %}
+
+    <div class="table-container">
+
+        <table id="lowAttendanceTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Attendance %</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>{{ record[0] }}</td>
+
+                    <td>{{ record[1] }}</td>
+
+                    <td>{{ record[2] }}</td>
+
+                    <td>{{ record[3] }}</td>
+
+                    <td>{{ record[4] }}</td>
+
+                    <td>{{ record[5] }}</td>
+
+                    <td>
+                        <strong class="attendance-warning">
+                            {{ record[6] }}%
+                        </strong>
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>🎉 No Low Attendance Records</h2>
+
+        <p>
+            All students currently have attendance of 75% or above.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function searchLowAttendance() {
+
+    let input =
+        document.getElementById("lowAttendanceSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("lowAttendanceTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

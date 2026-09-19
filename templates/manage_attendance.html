@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Attendance</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>📋 Manage Attendance</h1>
+
+    <p style="text-align:center;">
+        View, edit and delete attendance records
+    </p>
+
+
+    <div class="page-actions">
+
+        <a href="/attendance">
+            <button type="button">
+                + Mark Attendance
+            </button>
+        </a>
+
+        <a href="/attendance_report">
+            <button type="button">
+                Attendance Report
+            </button>
+        </a>
+
+        <a href="/faculty_dashboard">
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="attendanceManageSearch"
+            placeholder="Search by Student ID, Name, Subject or Date..."
+            onkeyup="searchManageAttendance()"
+        >
+
+    </div>
+
+
+    {% if records %}
+
+    <div class="table-container">
+
+        <table id="manageAttendanceTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>
+                        {{ record[1] }}
+                    </td>
+
+                    <td>
+                        {{ record[2] }}
+                    </td>
+
+                    <td>
+                        {{ record[3] }}
+                    </td>
+
+                    <td>
+                        {{ record[4] }}
+                    </td>
+
+                    <td>
+                        {{ record[5] }}
+                    </td>
+
+                    <td>
+
+                        {% if record[6] == "Present" %}
+
+                            <strong class="attendance-present">
+                                Present
+                            </strong>
+
+                        {% else %}
+
+                            <strong class="attendance-absent">
+                                Absent
+                            </strong>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <td class="action-buttons">
+
+                        <a href="/edit_attendance/{{ record[0] }}">
+
+                            <button type="button">
+                                Edit
+                            </button>
+
+                        </a>
+
+
+                        <a href="/delete_attendance/{{ record[0] }}"
+                           onclick="return confirm('Are you sure you want to delete this attendance record?');">
+
+                            <button type="button">
+                                Delete
+                            </button>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>📋 No Attendance Records Found</h2>
+
+        <p>
+            No attendance records have been created yet.
+        </p>
+
+        <a href="/attendance">
+
+            <button type="button">
+                Mark Attendance
+            </button>
+
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function searchManageAttendance() {
+
+    let input =
+        document.getElementById("attendanceManageSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("manageAttendanceTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

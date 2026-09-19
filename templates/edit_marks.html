@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Marks</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>✏️ Edit Marks</h1>
+
+    <div class="form-container">
+
+        <form method="POST">
+
+            <label>Student ID</label>
+
+            <input
+                type="text"
+                value="{{ record[1] }}"
+                readonly
+            >
+
+
+            <label>Student Name</label>
+
+            <input
+                type="text"
+                value="{{ record[2] }}"
+                readonly
+            >
+
+
+            <label>Subject</label>
+
+            <input
+                type="text"
+                value="{{ record[3] }} - {{ record[4] }}"
+                readonly
+            >
+
+
+            <label>Exam Type</label>
+
+            <input
+                type="text"
+                value="{{ record[5] }}"
+                readonly
+            >
+
+
+            <label>Marks</label>
+
+            <input
+                type="number"
+                name="marks"
+                min="0"
+                max="100"
+                step="0.01"
+                value="{{ record[6] }}"
+                required
+            >
+
+
+            <button type="submit">
+                Update Marks
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="page-actions">
+
+        <a href="/manage_marks">
+
+            <button type="button">
+                Back to Manage Marks
+            </button>
+
+        </a>
+
+        <a href="/faculty_dashboard">
+
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

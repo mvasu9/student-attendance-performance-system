@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Performance</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>📊 My Performance</h1>
+
+    <p style="text-align:center;">
+        View your subject-wise examination marks
+    </p>
+
+
+    {% if records %}
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="performanceSearch"
+            placeholder="Search by Subject Code, Subject Name or Exam..."
+            onkeyup="searchPerformance()"
+        >
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table id="studentPerformanceTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Exam Type</th>
+                    <th>Marks</th>
+                    <th>Result</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>
+                        {{ record[0] }}
+                    </td>
+
+                    <td>
+                        {{ record[1] }}
+                    </td>
+
+                    <td>
+                        {{ record[2] }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ record[3] }}
+                        </strong>
+                    </td>
+
+                    <td>
+
+                        {% if record[3] >= 40 %}
+
+                            <strong class="result-pass">
+                                ✓ Pass
+                            </strong>
+
+                        {% else %}
+
+                            <strong class="result-fail">
+                                ⚠️ Needs Improvement
+                            </strong>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>📊 No Performance Records Found</h2>
+
+        <p>
+            Your marks will appear here after examination
+            marks are entered.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="page-actions">
+
+        <a href="/student_dashboard">
+
+            <button type="button">
+                Back to Student Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function searchPerformance() {
+
+    let input =
+        document.getElementById("performanceSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("studentPerformanceTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

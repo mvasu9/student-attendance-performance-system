@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Student Dashboard</h1>
+
+    <h2>Welcome, {{ student_name }}! 👋</h2>
+
+    <p class="dashboard-subtitle">
+        View your attendance, subjects and academic performance
+    </p>
+
+
+    <!-- Student Statistics -->
+
+    <h2 class="section-title">📊 My Academic Statistics</h2>
+
+    <div class="dashboard-cards statistics-cards">
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">📚</div>
+
+            <h2>My Subjects</h2>
+
+            <p class="statistic-number">
+                {{ subject_count }}
+            </p>
+
+            <a href="/student_subjects">
+                <button type="button">
+                    View Subjects
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">📝</div>
+
+            <h2>Total Classes</h2>
+
+            <p class="statistic-number">
+                {{ total_classes }}
+            </p>
+
+            <a href="/student_attendance">
+                <button type="button">
+                    View Attendance
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">✅</div>
+
+            <h2>Present Classes</h2>
+
+            <p class="statistic-number">
+                {{ present_classes }}
+            </p>
+
+            <a href="/student_attendance">
+                <button type="button">
+                    View Attendance
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">📊</div>
+
+            <h2>Attendance %</h2>
+
+            <p class="statistic-number">
+                {{ attendance_percentage }}%
+            </p>
+
+            <a href="/student_attendance">
+                <button type="button">
+                    View Details
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">📈</div>
+
+            <h2>Marks Records</h2>
+
+            <p class="statistic-number">
+                {{ marks_count }}
+            </p>
+
+            <a href="/student_performance">
+                <button type="button">
+                    View Performance
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Academic Information -->
+
+    <h2 class="section-title">🎓 My Academic Information</h2>
+
+    <div class="dashboard-cards">
+
+        <div class="card">
+
+            <h2>📋 My Attendance</h2>
+
+            <p>
+                View your subject-wise attendance details.
+            </p>
+
+            <a href="/student_attendance">
+                <button type="button">
+                    View Attendance
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📚 My Subjects</h2>
+
+            <p>
+                View your registered subjects.
+            </p>
+
+            <a href="/student_subjects">
+                <button type="button">
+                    View Subjects
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📊 My Performance</h2>
+
+            <p>
+                View your examination marks and results.
+            </p>
+
+            <a href="/student_performance">
+                <button type="button">
+                    View Performance
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>⚠️ Low Attendance</h2>
+
+            <p>
+                Check subjects below 75% attendance.
+            </p>
+
+            <a href="/student_low_attendance">
+                <button type="button">
+                    Check Attendance
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+    <!-- Attendance Chart -->
+
+<h2 class="section-title">📊 Subject-wise Attendance</h2>
+
+<div class="card chart-card">
+
+    {% if attendance_labels %}
+
+    <canvas id="attendanceChart"></canvas>
+
+    {% else %}
+
+    <div class="empty-state">
+        <h2>📊 No Attendance Data</h2>
+        <p>Attendance data will appear here after classes are recorded.</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+    <!-- Logout -->
+
+    <div class="dashboard-logout">
+
+        <a href="/logout">
+            <button type="button">
+                🚪 Logout
+            </button>
+        </a>
+
+    </div>
+
+</div>
+<script>
+    const attendanceLabels = {{ attendance_labels | tojson }};
+    const attendancePercentages = {{ attendance_percentages | tojson }};
+
+    if (attendanceLabels.length > 0) {
+
+        const ctx = document.getElementById("attendanceChart");
+
+        new Chart(ctx, {
+            type: "bar",
+
+            data: {
+                labels: attendanceLabels,
+
+                datasets: [{
+                    label: "Attendance Percentage",
+
+                    data: attendancePercentages,
+
+                    borderWidth: 1
+                }]
+            },
+
+            options: {
+                responsive: true,
+
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+
+                        title: {
+                            display: true,
+                            text: "Attendance %"
+                        }
+                    },
+
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Subjects"
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

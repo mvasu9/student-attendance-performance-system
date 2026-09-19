@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Admin Dashboard</h1>
+
+    <h2>Welcome, Admin! 👋</h2>
+
+    <p class="dashboard-subtitle">
+        Student Attendance & Performance Management System
+    </p>
+
+
+    <!-- ================================
+         STATISTICS
+         ================================ -->
+
+    <h2 class="section-title">
+        📊 System Statistics
+    </h2>
+
+    <div class="dashboard-cards statistics-cards">
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">
+                👨‍🎓
+            </div>
+
+            <h2>Total Students</h2>
+
+            <p class="statistic-number">
+                {{ student_count }}
+            </p>
+
+            <a href="/students">
+
+                <button type="button">
+                    Manage Students
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">
+                👨‍🏫
+            </div>
+
+            <h2>Total Faculty</h2>
+
+            <p class="statistic-number">
+                {{ faculty_count }}
+            </p>
+
+            <a href="/faculty">
+
+                <button type="button">
+                    Manage Faculty
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">
+                📚
+            </div>
+
+            <h2>Total Subjects</h2>
+
+            <p class="statistic-number">
+                {{ subject_count }}
+            </p>
+
+            <a href="/subjects">
+
+                <button type="button">
+                    Manage Subjects
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">
+                📝
+            </div>
+
+            <h2>Attendance Records</h2>
+
+            <p class="statistic-number">
+                {{ attendance_count }}
+            </p>
+
+            <a href="/attendance_report">
+
+                <button type="button">
+                    View Report
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card statistic-card">
+
+            <div class="statistic-icon">
+                📊
+            </div>
+
+            <h2>Marks Records</h2>
+
+            <p class="statistic-number">
+                {{ marks_count }}
+            </p>
+
+            <a href="/marks_report">
+
+                <button type="button">
+                    View Report
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         QUICK MANAGEMENT
+         ================================ -->
+
+    <h2 class="section-title">
+        ⚡ Quick Management
+    </h2>
+
+    <div class="dashboard-cards">
+
+
+        <div class="card">
+
+            <h2>👨‍🎓 Student Management</h2>
+
+            <p>
+                Add, edit, search and delete students.
+            </p>
+
+            <a href="/students">
+
+                <button type="button">
+                    Open Students
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>👨‍🏫 Faculty Management</h2>
+
+            <p>
+                Add, edit, search and delete faculty.
+            </p>
+
+            <a href="/faculty">
+
+                <button type="button">
+                    Open Faculty
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📚 Subject Management</h2>
+
+            <p>
+                Add, edit, search and delete subjects.
+            </p>
+
+            <a href="/subjects">
+
+                <button type="button">
+                    Open Subjects
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📋 Attendance</h2>
+
+            <p>
+                View attendance records and reports.
+            </p>
+
+            <a href="/attendance_report">
+
+                <button type="button">
+                    View Attendance
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📈 Performance</h2>
+
+            <p>
+                View student marks and performance.
+            </p>
+
+            <a href="/marks_report">
+
+                <button type="button">
+                    View Performance
+                </button>
+
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>⚠️ Low Attendance</h2>
+
+            <p>
+                View students below 75% attendance.
+            </p>
+
+            <a href="/low_attendance">
+
+                <button type="button">
+                    Check Students
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================
+         LOGOUT
+         ================================ -->
+
+    <div class="dashboard-logout">
+
+        <a href="/logout">
+
+            <button type="button">
+                🚪 Logout
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

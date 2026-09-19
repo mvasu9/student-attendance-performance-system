@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Attendance</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>✏️ Edit Attendance</h1>
+
+    <div class="form-container">
+
+        <form method="POST">
+
+            <label>Student ID</label>
+
+            <input
+                type="text"
+                value="{{ record[1] }}"
+                readonly
+            >
+
+
+            <label>Student Name</label>
+
+            <input
+                type="text"
+                value="{{ record[2] }}"
+                readonly
+            >
+
+
+            <label>Subject</label>
+
+            <input
+                type="text"
+                value="{{ record[3] }} - {{ record[4] }}"
+                readonly
+            >
+
+
+            <label>Attendance Date</label>
+
+            <input
+                type="text"
+                value="{{ record[5] }}"
+                readonly
+            >
+
+
+            <label>Attendance Status</label>
+
+            <select name="status" required>
+
+                <option value="Present"
+                    {% if record[6] == "Present" %}
+                    selected
+                    {% endif %}>
+                    Present
+                </option>
+
+                <option value="Absent"
+                    {% if record[6] == "Absent" %}
+                    selected
+                    {% endif %}>
+                    Absent
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Update Attendance
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="page-actions">
+
+        <a href="/manage_attendance">
+
+            <button type="button">
+                Back to Manage Attendance
+            </button>
+
+        </a>
+
+        <a href="/faculty_dashboard">
+
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

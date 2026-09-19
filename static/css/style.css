@@ -1,0 +1,786 @@
+/* Admin Dashboard */
+
+.dashboard {
+    width: 90%;
+    max-width: 1100px;
+    margin: 50px auto;
+}
+
+.dashboard > h1 {
+    margin-top: 0;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.card button {
+    width: auto;
+    padding: 10px 18px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.dashboard-cards .card p {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 15px 0 0;
+}
+.attendance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.student-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.student-info strong {
+    font-size: 16px;
+}
+
+.student-info span {
+    color: #666;
+    font-size: 14px;
+}
+
+.attendance-status {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.attendance-status label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.attendance-status input {
+    width: auto;
+    margin: 0;
+}
+/* ================================
+   MODERN UI IMPROVEMENTS
+   ================================ */
+
+body {
+    background: #f5f7fb;
+    color: #222;
+}
+
+/* Dashboard */
+
+.dashboard {
+    width: 92%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.dashboard > h1 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 32px;
+}
+
+.dashboard > h2 {
+    margin-bottom: 25px;
+}
+
+/* Cards */
+
+.dashboard-cards {
+    gap: 24px;
+}
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.card button {
+    background: #2563eb;
+    color: white;
+}
+
+.card button:hover {
+    background: #1d4ed8;
+}
+
+/* Buttons */
+
+button {
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* Forms */
+
+form {
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Tables */
+
+table {
+    background: white;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+th {
+    background: #2563eb;
+    color: white;
+    font-weight: 600;
+}
+
+td {
+    background: white;
+}
+
+tr:hover td {
+    background: #f8fafc;
+}
+
+/* Search boxes */
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="date"] {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+/* Attendance rows */
+
+.attendance-row {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.attendance-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .dashboard {
+        width: 95%;
+        margin: 25px auto;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    form {
+        width: auto;
+        margin: 20px auto;
+    }
+
+    .attendance-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .attendance-status {
+        width: 100%;
+    }
+}
+/* ================================
+   LOGIN PAGE
+   ================================ */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 420px;
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+}
+
+.login-box h1 {
+    margin: 0;
+    font-size: 28px;
+    text-align: center;
+}
+
+.login-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.login-box form {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+.login-box label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.login-box input,
+.login-box select {
+    margin-bottom: 10px;
+}
+
+.login-box button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.login-footer {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    margin-top: 25px;
+}
+
+@media (max-width: 480px) {
+
+    .login-box {
+        padding: 25px;
+    }
+
+    .login-box h1 {
+        font-size: 23px;
+    }
+}
+/* ================================
+   MANAGEMENT PAGES
+   ================================ */
+
+.page-actions {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+    flex-wrap: wrap;
+}
+
+.page-actions button {
+    width: auto;
+    padding: 10px 18px;
+}
+
+.search-container {
+    margin: 20px 0;
+}
+
+.search-container input {
+    max-width: 500px;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.table-container table {
+    min-width: 1000px;
+}
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.action-buttons button {
+    width: auto;
+    padding: 7px 12px;
+    margin: 2px;
+}
+
+.empty-state {
+    background: white;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-state h2 {
+    margin-top: 0;
+}
+
+@media (max-width: 768px) {
+
+    .page-actions {
+        flex-direction: column;
+    }
+
+    .page-actions button {
+        width: 100%;
+    }
+
+    .search-container input {
+        max-width: 100%;
+    }
+
+}
+/* ================================
+   FORM CONTAINER
+   ================================ */
+
+.form-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.form-container form {
+    width: 100%;
+    margin: 0;
+    padding: 30px;
+    box-sizing: border-box;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form-container button {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.form-container input::placeholder {
+    color: #999;
+}
+
+@media (max-width: 600px) {
+
+    .form-container {
+        width: 95%;
+    }
+
+    .form-container form {
+        padding: 20px;
+    }
+
+}
+/* ================================
+   ATTENDANCE MANAGEMENT
+   ================================ */
+
+.attendance-management {
+    margin-top: 30px;
+}
+
+.attendance-management > h2 {
+    margin-bottom: 20px;
+}
+
+.attendance-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.attendance-actions button {
+    width: auto;
+    padding: 10px 18px;
+}
+
+.save-attendance-button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 25px auto;
+    padding: 12px 20px;
+}
+
+@media (max-width: 600px) {
+
+    .attendance-actions {
+        flex-direction: column;
+    }
+
+    .attendance-actions button {
+        width: 100%;
+    }
+
+}
+/* ================================
+   ATTENDANCE REPORT
+   ================================ */
+
+.attendance-good {
+    font-weight: 700;
+}
+
+.attendance-low {
+    font-weight: 700;
+}
+
+#attendanceTable th,
+#attendanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#attendanceTable td:nth-child(2),
+#attendanceTable td:nth-child(4) {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+
+    #attendanceTable {
+        min-width: 900px;
+    }
+
+}
+/* ================================
+   LOW ATTENDANCE
+   ================================ */
+
+.attendance-warning {
+    font-weight: 700;
+}
+
+#lowAttendanceTable th,
+#lowAttendanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#lowAttendanceTable td:nth-child(2),
+#lowAttendanceTable td:nth-child(4) {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+
+    #lowAttendanceTable {
+        min-width: 900px;
+    }
+
+}
+/* ================================
+   MARKS MANAGEMENT
+   ================================ */
+
+.form-container input[type="number"] {
+    font-size: 16px;
+}
+
+.form-container select {
+    margin-bottom: 5px;
+}
+/* ================================
+   PERFORMANCE REPORT
+   ================================ */
+
+.result-pass {
+    font-weight: 700;
+}
+
+.result-fail {
+    font-weight: 700;
+}
+
+#marksTable th,
+#marksTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#marksTable td:nth-child(2),
+#marksTable td:nth-child(4) {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+
+    #marksTable {
+        min-width: 900px;
+    }
+
+}
+/* ================================
+   MANAGE ATTENDANCE
+   ================================ */
+
+.attendance-present {
+    font-weight: 700;
+}
+
+.attendance-absent {
+    font-weight: 700;
+}
+
+#manageAttendanceTable th,
+#manageAttendanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#manageAttendanceTable td:nth-child(2),
+#manageAttendanceTable td:nth-child(4) {
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+
+    #manageAttendanceTable {
+        min-width: 1000px;
+    }
+
+}
+/* ================================
+   STUDENT ATTENDANCE
+   ================================ */
+
+#studentAttendanceTable th,
+#studentAttendanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#studentAttendanceTable td:nth-child(2) {
+    text-align: left;
+}
+
+.attendance-good {
+    font-weight: 700;
+}
+
+.attendance-warning {
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+
+    #studentAttendanceTable {
+        min-width: 850px;
+    }
+
+}
+/* ================================
+   STUDENT PERFORMANCE
+   ================================ */
+
+#studentPerformanceTable th,
+#studentPerformanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#studentPerformanceTable td:nth-child(2) {
+    text-align: left;
+}
+
+.result-pass {
+    font-weight: 700;
+}
+
+.result-fail {
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+
+    #studentPerformanceTable {
+        min-width: 800px;
+    }
+
+}
+/* ================================
+   STUDENT LOW ATTENDANCE
+   ================================ */
+
+#studentLowAttendanceTable th,
+#studentLowAttendanceTable td {
+    text-align: center;
+    padding: 12px;
+}
+
+#studentLowAttendanceTable td:nth-child(2) {
+    text-align: left;
+}
+
+.attendance-warning {
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+
+    #studentLowAttendanceTable {
+        min-width: 850px;
+    }
+
+}
+/* ================================
+   ADMIN DASHBOARD STATISTICS
+   ================================ */
+
+.dashboard-subtitle {
+    text-align: center;
+    color: #666;
+    margin-bottom: 35px;
+}
+
+.section-title {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.statistics-cards {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.statistic-card {
+    text-align: center;
+    padding: 25px 15px;
+}
+
+.statistic-icon {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.statistic-card h2 {
+    font-size: 18px;
+    margin: 8px 0;
+}
+
+.statistic-number {
+    font-size: 36px !important;
+    font-weight: bold;
+    margin: 12px 0 18px !important;
+}
+
+.dashboard-logout {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.dashboard-logout button {
+    width: auto;
+    padding: 11px 25px;
+}
+
+
+/* Mobile and tablet */
+
+@media (max-width: 1000px) {
+
+    .statistics-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .statistics-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .statistic-number {
+        font-size: 32px !important;
+    }
+
+}
+.chart-card {
+    margin-top: 20px;
+    padding: 30px;
+}
+
+.chart-card canvas {
+    max-height: 400px;
+}

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Marks Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>📊 Marks Management</h1>
+
+    <p style="text-align:center;">
+        Enter student examination marks
+    </p>
+
+
+    <div class="form-container">
+
+        <form method="POST" action="/save_marks">
+
+            <label>Select Student</label>
+
+            <select name="student_id" required>
+
+                <option value="">
+                    -- Select Student --
+                </option>
+
+                {% for student in students %}
+
+                <option value="{{ student[0] }}">
+                    {{ student[1] }} - {{ student[2] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Select Subject</label>
+
+            <select name="subject_id" required>
+
+                <option value="">
+                    -- Select Subject --
+                </option>
+
+                {% for subject in subjects %}
+
+                <option value="{{ subject[0] }}">
+                    {{ subject[1] }} - {{ subject[2] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Exam Type</label>
+
+            <select name="exam_type" required>
+
+                <option value="">
+                    -- Select Exam Type --
+                </option>
+
+                <option value="Internal 1">
+                    Internal 1
+                </option>
+
+                <option value="Internal 2">
+                    Internal 2
+                </option>
+
+                <option value="Mid Exam">
+                    Mid Exam
+                </option>
+
+                <option value="External">
+                    External
+                </option>
+
+                <option value="Assignment">
+                    Assignment
+                </option>
+
+            </select>
+
+
+            <label>Marks</label>
+
+            <input
+                type="number"
+                name="marks"
+                min="0"
+                max="100"
+                step="0.01"
+                placeholder="Enter marks (0 - 100)"
+                required
+            >
+
+
+            <button type="submit">
+                💾 Save Marks
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <div class="page-actions">
+
+        <a href="/manage_marks">
+
+            <button type="button">
+                Manage Marks
+            </button>
+
+        </a>
+
+
+        <a href="/marks_report">
+
+            <button type="button">
+                Performance Report
+            </button>
+
+        </a>
+
+
+        <a href="/faculty_dashboard">
+
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

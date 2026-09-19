@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Marks</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>📊 Manage Marks</h1>
+
+    <div class="page-actions">
+
+        <a href="/marks">
+            <button type="button">
+                + Enter Marks
+            </button>
+        </a>
+
+        <a href="/marks_report">
+            <button type="button">
+                Performance Report
+            </button>
+        </a>
+
+        <a href="/faculty_dashboard">
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="marksManageSearch"
+            placeholder="Search by Student ID, Name, Subject or Exam..."
+            onkeyup="searchManageMarks()"
+        >
+
+    </div>
+
+
+    {% if records %}
+
+    <div class="table-container">
+
+        <table id="manageMarksTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Exam Type</th>
+                    <th>Marks</th>
+                    <th>Result</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>{{ record[1] }}</td>
+
+                    <td>{{ record[2] }}</td>
+
+                    <td>{{ record[3] }}</td>
+
+                    <td>{{ record[4] }}</td>
+
+                    <td>{{ record[5] }}</td>
+
+                    <td>
+                        <strong>
+                            {{ record[6] }}
+                        </strong>
+                    </td>
+
+                    <td>
+
+                        {% if record[6] >= 40 %}
+
+                            <strong class="result-pass">
+                                Pass
+                            </strong>
+
+                        {% else %}
+
+                            <strong class="result-fail">
+                                Needs Improvement
+                            </strong>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="action-buttons">
+
+                        <a href="/edit_marks/{{ record[0] }}">
+                            <button type="button">
+                                Edit
+                            </button>
+                        </a>
+
+                        <a href="/delete_marks/{{ record[0] }}"
+                           onclick="return confirm('Are you sure you want to delete this marks record?');">
+
+                            <button type="button">
+                                Delete
+                            </button>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>No Marks Records Found</h2>
+
+        <p>
+            No marks have been entered yet.
+        </p>
+
+        <a href="/marks">
+            <button type="button">
+                Enter Marks
+            </button>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function searchManageMarks() {
+
+    let input =
+        document.getElementById("marksManageSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("manageMarksTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

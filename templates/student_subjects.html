@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Subjects</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>📚 My Subjects</h1>
+
+    <p style="text-align:center;">
+        Subjects registered for your department and year
+    </p>
+
+
+    {% if records %}
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="subjectSearch"
+            placeholder="Search by Subject Code, Name or Department..."
+            onkeyup="searchSubjects()"
+        >
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table id="studentSubjectsTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>
+                        {{ record[0] }}
+                    </td>
+
+                    <td>
+                        {{ record[1] }}
+                    </td>
+
+                    <td>
+                        {{ record[2] }}
+                    </td>
+
+                    <td>
+                        {{ record[3] }}
+                    </td>
+
+                    <td>
+                        {{ record[4] }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>📚 No Subjects Found</h2>
+
+        <p>
+            No subjects are assigned to your department and year.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="page-actions">
+
+        <a href="/student_dashboard">
+
+            <button type="button">
+                Back to Student Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function searchSubjects() {
+
+    let input =
+        document.getElementById("subjectSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("studentSubjectsTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

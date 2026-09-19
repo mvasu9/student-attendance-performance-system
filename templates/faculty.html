@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Faculty Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Faculty Management</h1>
+
+
+    <div class="page-actions">
+
+        <a href="/add_faculty">
+            <button type="button">
+                + Add Faculty
+            </button>
+        </a>
+
+        <a href="/admin_dashboard">
+            <button type="button">
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="facultySearch"
+            placeholder="Search by Faculty ID, Name, Email or Department..."
+            onkeyup="searchFaculty()"
+        >
+
+    </div>
+
+
+    {% if faculty %}
+
+    <div class="table-container">
+
+        <table id="facultyTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Faculty ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for member in faculty %}
+
+                <tr>
+
+                    <td>{{ member[0] }}</td>
+                    <td>{{ member[1] }}</td>
+                    <td>{{ member[2] }}</td>
+                    <td>{{ member[3] }}</td>
+                    <td>{{ member[4] }}</td>
+                    <td>{{ member[5] }}</td>
+                    <td>{{ member[6] }}</td>
+
+                    <td class="action-buttons">
+
+                        <a href="/edit_faculty/{{ member[0] }}">
+                            <button type="button">
+                                Edit
+                            </button>
+                        </a>
+
+                        <a href="/delete_faculty/{{ member[0] }}"
+                           onclick="return confirm('Are you sure you want to delete this faculty member?');">
+
+                            <button type="button">
+                                Delete
+                            </button>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>No Faculty Found</h2>
+
+        <p>
+            No faculty records are available.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function searchFaculty() {
+
+    let input = document.getElementById("facultySearch");
+
+    let filter = input.value.toLowerCase();
+
+    let table = document.getElementById("facultyTable");
+
+    let rows = table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText = rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

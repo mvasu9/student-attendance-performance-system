@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Faculty</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Edit Faculty</h1>
+
+    <div class="form-container">
+
+        <form method="POST">
+
+            <label>Faculty ID</label>
+            <input
+                type="text"
+                name="faculty_id"
+                value="{{ faculty[1] }}"
+                required
+            >
+
+            <label>Faculty Name</label>
+            <input
+                type="text"
+                name="name"
+                value="{{ faculty[2] }}"
+                required
+            >
+
+            <label>Email</label>
+            <input
+                type="email"
+                name="email"
+                value="{{ faculty[3] }}"
+                required
+            >
+
+            <label>Phone</label>
+            <input
+                type="text"
+                name="phone"
+                value="{{ faculty[4] }}"
+            >
+
+            <label>Department</label>
+            <input
+                type="text"
+                name="department"
+                value="{{ faculty[5] }}"
+                required
+            >
+
+            <label>Designation</label>
+            <input
+                type="text"
+                name="designation"
+                value="{{ faculty[6] }}"
+            >
+
+            <button type="submit">
+                Update Faculty
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="page-actions">
+
+        <a href="/faculty">
+            <button type="button">
+                Back to Faculty
+            </button>
+        </a>
+
+        <a href="/admin_dashboard">
+            <button type="button">
+                Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

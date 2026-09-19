@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Report</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Attendance Report</h1>
+
+    <div class="page-actions">
+
+        <a href="/attendance">
+            <button type="button">
+                Mark Attendance
+            </button>
+        </a>
+
+        <a href="/manage_attendance">
+            <button type="button">
+                Manage Attendance
+            </button>
+        </a>
+
+        <a href="/faculty_dashboard">
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+        </a>
+
+    </div>
+
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="attendanceSearch"
+            placeholder="Search by Student ID, Name, Subject..."
+            onkeyup="searchAttendance()"
+        >
+
+    </div>
+
+
+    {% if records %}
+
+    <div class="table-container">
+
+        <table id="attendanceTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Attendance %</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for record in records %}
+
+                <tr>
+
+                    <td>{{ record[0] }}</td>
+
+                    <td>{{ record[1] }}</td>
+
+                    <td>{{ record[2] }}</td>
+
+                    <td>{{ record[3] }}</td>
+
+                    <td>{{ record[4] }}</td>
+
+                    <td>{{ record[5] }}</td>
+
+                    <td>
+
+                        {% if record[6] < 75 %}
+
+                            <strong class="attendance-low">
+                                {{ record[6] }}%
+                            </strong>
+
+                        {% else %}
+
+                            <strong class="attendance-good">
+                                {{ record[6] }}%
+                            </strong>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>No Attendance Records Found</h2>
+
+        <p>
+            Attendance records will appear here after attendance is marked.
+        </p>
+
+        <a href="/attendance">
+            <button type="button">
+                Mark Attendance
+            </button>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function searchAttendance() {
+
+    let input =
+        document.getElementById("attendanceSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("attendanceTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>

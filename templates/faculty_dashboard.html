@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Faculty Dashboard</h1>
+
+    <h2>Welcome, {{ faculty_name }}! 👋</h2>
+
+    <p class="dashboard-subtitle">
+        Manage students, attendance and academic performance
+    </p>
+
+
+    <!-- Statistics -->
+
+    <h2 class="section-title">📊 Academic Statistics</h2>
+
+    <div class="dashboard-cards statistics-cards">
+
+        <div class="card statistic-card">
+            <div class="statistic-icon">👨‍🎓</div>
+
+            <h2>Total Students</h2>
+
+            <p class="statistic-number">
+                {{ student_count }}
+            </p>
+
+            <a href="/students">
+                <button type="button">
+                    View Students
+                </button>
+            </a>
+        </div>
+
+
+        <div class="card statistic-card">
+            <div class="statistic-icon">📚</div>
+
+            <h2>Total Subjects</h2>
+
+            <p class="statistic-number">
+                {{ subject_count }}
+            </p>
+
+            <a href="/subjects">
+                <button type="button">
+                    View Subjects
+                </button>
+            </a>
+        </div>
+
+
+        <div class="card statistic-card">
+            <div class="statistic-icon">📝</div>
+
+            <h2>Attendance Records</h2>
+
+            <p class="statistic-number">
+                {{ attendance_count }}
+            </p>
+
+            <a href="/attendance_report">
+                <button type="button">
+                    View Report
+                </button>
+            </a>
+        </div>
+
+
+        <div class="card statistic-card">
+            <div class="statistic-icon">📊</div>
+
+            <h2>Marks Records</h2>
+
+            <p class="statistic-number">
+                {{ marks_count }}
+            </p>
+
+            <a href="/marks_report">
+                <button type="button">
+                    View Report
+                </button>
+            </a>
+        </div>
+
+
+        <div class="card statistic-card">
+            <div class="statistic-icon">⚠️</div>
+
+            <h2>Low Attendance</h2>
+
+            <p class="statistic-number">
+                {{ low_attendance_count }}
+            </p>
+
+            <a href="/low_attendance">
+                <button type="button">
+                    Check Students
+                </button>
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Academic Management -->
+
+    <h2 class="section-title">🎓 Academic Management</h2>
+
+    <div class="dashboard-cards">
+
+        <div class="card">
+
+            <h2>👨‍🎓 Students</h2>
+
+            <p>
+                View student records and information.
+            </p>
+
+            <a href="/students">
+                <button type="button">
+                    View Students
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📝 Attendance</h2>
+
+            <p>
+                Mark and manage student attendance.
+            </p>
+
+            <a href="/attendance">
+                <button type="button">
+                    Mark Attendance
+                </button>
+            </a>
+
+            <br>
+
+            <a href="/manage_attendance">
+                <button type="button">
+                    Manage Attendance
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📊 Performance</h2>
+
+            <p>
+                Enter and manage student marks.
+            </p>
+
+            <a href="/marks">
+                <button type="button">
+                    Enter Marks
+                </button>
+            </a>
+
+            <br>
+
+            <a href="/manage_marks">
+                <button type="button">
+                    Manage Marks
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Reports -->
+
+    <h2 class="section-title">📈 Reports & Alerts</h2>
+
+    <div class="dashboard-cards">
+
+        <div class="card">
+
+            <h2>📋 Attendance Report</h2>
+
+            <p>
+                View subject-wise attendance summary.
+            </p>
+
+            <a href="/attendance_report">
+                <button type="button">
+                    View Report
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>📈 Performance Report</h2>
+
+            <p>
+                View student examination performance.
+            </p>
+
+            <a href="/marks_report">
+                <button type="button">
+                    View Report
+                </button>
+            </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>⚠️ Low Attendance</h2>
+
+            <p>
+                View students below 75% attendance.
+            </p>
+
+            <a href="/low_attendance">
+                <button type="button">
+                    Check Students
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Logout -->
+
+    <div class="dashboard-logout">
+
+        <a href="/logout">
+            <button type="button">
+                🚪 Logout
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

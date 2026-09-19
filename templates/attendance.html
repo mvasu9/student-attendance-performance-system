@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Management</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>Attendance Management</h1>
+
+    <div class="form-container">
+
+        <form method="POST" action="/save_attendance">
+
+            <label>Select Subject</label>
+
+            <select name="subject_id" required>
+
+                <option value="">
+                    -- Select Subject --
+                </option>
+
+                {% for subject in subjects %}
+
+                <option value="{{ subject[0] }}">
+                    {{ subject[1] }} - {{ subject[2] }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Attendance Date</label>
+
+            <input
+                type="date"
+                name="attendance_date"
+                required
+            >
+
+        </form>
+
+    </div>
+
+
+    <div class="attendance-management">
+
+        <h2>Student Attendance</h2>
+
+        <div class="attendance-actions">
+
+            <button type="button"
+                    onclick="markAllPresent()">
+                ✓ Mark All Present
+            </button>
+
+            <button type="button"
+                    onclick="markAllAbsent()">
+                ✕ Mark All Absent
+            </button>
+
+        </div>
+
+
+        <form method="POST"
+              action="/save_attendance">
+
+            <input type="hidden"
+                   name="subject_id"
+                   id="selectedSubject">
+
+            <input type="hidden"
+                   name="attendance_date"
+                   id="selectedDate">
+
+
+            {% if students %}
+
+                {% for student in students %}
+
+                <div class="attendance-row">
+
+                    <div class="student-info">
+
+                        <strong>
+                            {{ student[1] }}
+                        </strong>
+
+                        <span>
+                            {{ student[2] }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="attendance-status">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="status_{{ student[0] }}"
+                                value="Present"
+                                required
+                            >
+
+                            <span>Present</span>
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="status_{{ student[0] }}"
+                                value="Absent"
+                            >
+
+                            <span>Absent</span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+
+                <button type="submit"
+                        class="save-attendance-button">
+                    Save Attendance
+                </button>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h2>No Students Found</h2>
+
+                    <p>
+                        Add students before marking attendance.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </form>
+
+    </div>
+
+
+    <div class="page-actions">
+
+        <a href="/manage_attendance">
+
+            <button type="button">
+                Manage Attendance
+            </button>
+
+        </a>
+
+        <a href="/attendance_report">
+
+            <button type="button">
+                Attendance Report
+            </button>
+
+        </a>
+
+        <a href="/faculty_dashboard">
+
+            <button type="button">
+                Back to Faculty Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function copyAttendanceDetails() {
+
+    const subject =
+        document.querySelector(
+            'select[name="subject_id"]'
+        ).value;
+
+    const date =
+        document.querySelector(
+            'input[name="attendance_date"]'
+        ).value;
+
+    document.getElementById(
+        "selectedSubject"
+    ).value = subject;
+
+    document.getElementById(
+        "selectedDate"
+    ).value = date;
+
+}
+
+
+document
+    .querySelector('select[name="subject_id"]')
+    .addEventListener(
+        "change",
+        copyAttendanceDetails
+    );
+
+
+document
+    .querySelector('input[name="attendance_date"]')
+    .addEventListener(
+        "change",
+        copyAttendanceDetails
+    );
+
+
+function markAllPresent() {
+
+    const buttons =
+        document.querySelectorAll(
+            'input[type="radio"][value="Present"]'
+        );
+
+    buttons.forEach(function(button) {
+
+        button.checked = true;
+
+    });
+
+}
+
+
+function markAllAbsent() {
+
+    const buttons =
+        document.querySelectorAll(
+            'input[type="radio"][value="Absent"]'
+        );
+
+    buttons.forEach(function(button) {
+
+        button.checked = true;
+
+    });
+
+}
+
+
+document
+    .querySelectorAll("form")
+    .forEach(function(form) {
+
+        form.addEventListener(
+            "submit",
+            function() {
+
+                copyAttendanceDetails();
+
+            }
+        );
+
+    });
+
+</script>
+
+</body>
+
+</html>

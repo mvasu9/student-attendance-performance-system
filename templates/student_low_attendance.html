@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Low Attendance Alert</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <h1>⚠️ Low Attendance Alert</h1>
+
+    <p style="text-align:center;">
+        Subjects where your attendance is below 75%
+    </p>
+
+
+    {% if records %}
+
+    <div class="search-container">
+
+        <input
+            type="text"
+            id="lowAttendanceSearch"
+            placeholder="Search by Subject Code or Subject Name..."
+            onkeyup="searchLowAttendance()"
+        >
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table id="studentLowAttendanceTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Total Classes</th>
+                    <th>Present</th>
+                    <th>Attendance %</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for record in records %}
+
+                {% set percentage = (record[3] / record[2]) * 100 %}
+
+                <tr>
+
+                    <td>
+                        {{ record[0] }}
+                    </td>
+
+                    <td>
+                        {{ record[1] }}
+                    </td>
+
+                    <td>
+                        {{ record[2] }}
+                    </td>
+
+                    <td>
+                        {{ record[3] }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ "%.2f"|format(percentage) }}%
+                        </strong>
+                    </td>
+
+                    <td>
+
+                        <strong class="attendance-warning">
+                            ⚠️ Low Attendance
+                        </strong>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h2>🎉 No Low Attendance</h2>
+
+        <p>
+            Your attendance is 75% or above in all subjects.
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="page-actions">
+
+        <a href="/student_attendance">
+
+            <button type="button">
+                View My Attendance
+            </button>
+
+        </a>
+
+        <a href="/student_dashboard">
+
+            <button type="button">
+                Back to Student Dashboard
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function searchLowAttendance() {
+
+    let input =
+        document.getElementById("lowAttendanceSearch");
+
+    let filter =
+        input.value.toLowerCase();
+
+    let table =
+        document.getElementById("studentLowAttendanceTable");
+
+    if (!table) {
+        return;
+    }
+
+    let rows =
+        table.getElementsByTagName("tr");
+
+
+    for (let i = 1; i < rows.length; i++) {
+
+        let rowText =
+            rows[i].innerText.toLowerCase();
+
+        if (rowText.includes(filter)) {
+
+            rows[i].style.display = "";
+
+        } else {
+
+            rows[i].style.display = "none";
+
+        }
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
