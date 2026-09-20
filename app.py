@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "student_management_secret_key"
+app.secret_key = os.getenv("SECRET_KEY")
 def admin_required():
     if session.get("user_id") is None:
         return False
