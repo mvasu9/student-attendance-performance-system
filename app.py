@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, session, redirect
-import mysql.connector
+import os
+import psycopg2
+from dotenv import load_dotenv
 from werkzeug.security import check_password_hash
+
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = "student_management_secret_key"
@@ -26,18 +30,14 @@ def student_required():
 
 
 # ==========================================
-# MySQL Database Connection
+# Supabase PostgreSQL Database Connection
 # ==========================================
 
-db = mysql.connector.connect(
-    host="localhost",
-    port=3306,
-    user="root",
-    password="Vvasu@#$143",
-    database="student_management"
+db = psycopg2.connect(
+    os.getenv("DATABASE_URL")
 )
 
-print("MySQL database connected successfully!")
+print("Supabase PostgreSQL database connected successfully!")
 
 
 # ==========================================
@@ -632,7 +632,7 @@ def save_attendance():
 
         db.commit()
 
-    except mysql.connector.Error as error:
+    except psycopg2.Error as error:
 
         db.rollback()
 
@@ -675,10 +675,16 @@ def attendance_report():
             subjects.subject_code,
             subjects.subject_name,
             COUNT(attendance_records.id) AS total_classes,
-            SUM(attendance_records.status = 'Present') AS present_classes,
+            COUNT(*) FILTER (
+                WHERE attendance_records.status = 'Present'
+            ) AS present_classes,
             ROUND(
-                (SUM(attendance_records.status = 'Present')
-                / COUNT(attendance_records.id)) * 100,
+                (
+                    COUNT(*) FILTER (
+                        WHERE attendance_records.status = 'Present'
+                    )::numeric
+                    / COUNT(attendance_records.id)
+                ) * 100,
                 2
             ) AS attendance_percentage
         FROM attendance_records
@@ -688,11 +694,17 @@ def attendance_report():
             ON attendance_records.subject_id = subjects.id
         GROUP BY
             students.id,
-            subjects.id
+            subjects.id,
+            students.student_id,
+            students.name,
+            subjects.subject_code,
+            subjects.subject_name
+        ORDER BY
+            students.student_id,
+            subjects.subject_code
     """
 
     cursor.execute(query)
-
     records = cursor.fetchall()
 
     cursor.close()
@@ -1091,24 +1103,29 @@ def faculty_dashboard():
 
     # Low attendance cases
     cursor.execute("""
-    SELECT COUNT(*)
-    FROM (
-        SELECT
-            students.id AS student_id,
-            subjects.id AS subject_id
-        FROM attendance_records
-        JOIN students
-            ON attendance_records.student_id = students.id
-        JOIN subjects
-            ON attendance_records.subject_id = subjects.id
-        GROUP BY
-            students.id,
-            subjects.id
-        HAVING
-            (SUM(attendance_records.status = 'Present')
-            / COUNT(attendance_records.id)) * 100 < 75
-    ) AS low_attendance
-""")
+        SELECT COUNT(*)
+        FROM (
+            SELECT
+                students.id AS student_id,
+                subjects.id AS subject_id
+            FROM attendance_records
+            JOIN students
+                ON attendance_records.student_id = students.id
+            JOIN subjects
+                ON attendance_records.subject_id = subjects.id
+            GROUP BY
+                students.id,
+                subjects.id
+            HAVING
+                (
+                    COUNT(*) FILTER (
+                        WHERE attendance_records.status = 'Present'
+                    )::numeric
+                    / COUNT(attendance_records.id)
+                ) * 100 < 75
+        ) AS low_attendance
+    """)
+
     low_attendance_count = cursor.fetchone()[0]
 
     cursor.close()
@@ -1137,10 +1154,16 @@ def low_attendance():
             subjects.subject_code,
             subjects.subject_name,
             COUNT(attendance_records.id) AS total_classes,
-            SUM(attendance_records.status = 'Present') AS present_classes,
+            COUNT(*) FILTER (
+                WHERE attendance_records.status = 'Present'
+            ) AS present_classes,
             ROUND(
-                (SUM(attendance_records.status = 'Present')
-                / COUNT(attendance_records.id)) * 100,
+                (
+                    COUNT(*) FILTER (
+                        WHERE attendance_records.status = 'Present'
+                    )::numeric
+                    / COUNT(attendance_records.id)
+                ) * 100,
                 2
             ) AS attendance_percentage
         FROM attendance_records
@@ -1150,13 +1173,24 @@ def low_attendance():
             ON attendance_records.subject_id = subjects.id
         GROUP BY
             students.id,
-            subjects.id
+            subjects.id,
+            students.student_id,
+            students.name,
+            subjects.subject_code,
+            subjects.subject_name
         HAVING
-            attendance_percentage < 75
+            (
+                COUNT(*) FILTER (
+                    WHERE attendance_records.status = 'Present'
+                )::numeric
+                / COUNT(attendance_records.id)
+            ) * 100 < 75
+        ORDER BY
+            students.student_id,
+            subjects.subject_code
     """
 
     cursor.execute(query)
-
     records = cursor.fetchall()
 
     cursor.close()
@@ -1169,10 +1203,9 @@ def low_attendance():
 def student_attendance():
 
     if not student_required():
-      return "Access denied!"
+        return "Access denied!"
 
     user_id = session.get("user_id")
-    print("Logged in user ID:", user_id)
 
     cursor = db.cursor()
 
@@ -1189,23 +1222,27 @@ def student_attendance():
         return "Student profile not found!"
 
     student_id = student[0]
-    print("Student database ID:", student_id)
 
     cursor.execute("""
         SELECT
             subjects.subject_code,
             subjects.subject_name,
             COUNT(attendance_records.id) AS total_classes,
-            SUM(attendance_records.status = 'Present') AS present_classes
+            COUNT(*) FILTER (
+                WHERE attendance_records.status = 'Present'
+            ) AS present_classes
         FROM attendance_records
         JOIN subjects
             ON attendance_records.subject_id = subjects.id
         WHERE attendance_records.student_id = %s
-        GROUP BY subjects.id
+        GROUP BY
+            subjects.id,
+            subjects.subject_code,
+            subjects.subject_name
+        ORDER BY subjects.subject_code
     """, (student_id,))
 
     records = cursor.fetchall()
-    print("Attendance records:", records)
 
     cursor.close()
 
@@ -1223,7 +1260,6 @@ def student_dashboard():
 
     cursor = db.cursor()
 
-    # Get student details
     cursor.execute("""
         SELECT id, name, department, year
         FROM students
@@ -1239,7 +1275,6 @@ def student_dashboard():
     student_id = student[0]
     student_name = student[1]
 
-    # Total subjects
     cursor.execute("""
         SELECT COUNT(*)
         FROM subjects
@@ -1249,7 +1284,6 @@ def student_dashboard():
 
     subject_count = cursor.fetchone()[0]
 
-    # Total attendance classes
     cursor.execute("""
         SELECT COUNT(*)
         FROM attendance_records
@@ -1258,7 +1292,6 @@ def student_dashboard():
 
     total_classes = cursor.fetchone()[0]
 
-    # Present classes
     cursor.execute("""
         SELECT COUNT(*)
         FROM attendance_records
@@ -1268,7 +1301,6 @@ def student_dashboard():
 
     present_classes = cursor.fetchone()[0]
 
-    # Overall attendance percentage
     if total_classes > 0:
         attendance_percentage = round(
             (present_classes / total_classes) * 100,
@@ -1277,7 +1309,6 @@ def student_dashboard():
     else:
         attendance_percentage = 0
 
-    # Total marks records
     cursor.execute("""
         SELECT COUNT(*)
         FROM marks
@@ -1286,12 +1317,13 @@ def student_dashboard():
 
     marks_count = cursor.fetchone()[0]
 
-    # Subject-wise attendance for chart
     cursor.execute("""
         SELECT
             subjects.subject_name,
             COUNT(attendance_records.id) AS total_classes,
-            SUM(attendance_records.status = 'Present') AS present_classes
+            COUNT(*) FILTER (
+                WHERE attendance_records.status = 'Present'
+            ) AS present_classes
         FROM attendance_records
         JOIN subjects
             ON attendance_records.subject_id = subjects.id
@@ -1302,7 +1334,6 @@ def student_dashboard():
 
     attendance_records = cursor.fetchall()
 
-    # Prepare chart data
     attendance_labels = []
     attendance_percentages = []
 
@@ -1336,7 +1367,6 @@ def student_dashboard():
 @app.route("/student_performance")
 def student_performance():
 
-    # Check whether the logged-in user is a student
     if not student_required():
         return "Access denied!"
 
@@ -1344,7 +1374,6 @@ def student_performance():
 
     cursor = db.cursor()
 
-    # Get the logged-in student's database ID
     cursor.execute("""
         SELECT id
         FROM students
@@ -1359,7 +1388,6 @@ def student_performance():
 
     student_id = student[0]
 
-    # Get marks belonging to the logged-in student
     cursor.execute("""
         SELECT
             subjects.subject_code,
@@ -1383,7 +1411,7 @@ def student_performance():
     )
 @app.route("/student_low_attendance")
 def student_low_attendance():
-        
+
     if not student_required():
         return "Access denied!"
 
@@ -1410,14 +1438,25 @@ def student_low_attendance():
             subjects.subject_code,
             subjects.subject_name,
             COUNT(attendance_records.id) AS total_classes,
-            SUM(attendance_records.status = 'Present') AS present_classes
+            COUNT(*) FILTER (
+                WHERE attendance_records.status = 'Present'
+            ) AS present_classes
         FROM attendance_records
         JOIN subjects
             ON attendance_records.subject_id = subjects.id
         WHERE attendance_records.student_id = %s
-        GROUP BY subjects.id
+        GROUP BY
+            subjects.id,
+            subjects.subject_code,
+            subjects.subject_name
         HAVING
-            (SUM(attendance_records.status = 'Present') / COUNT(attendance_records.id)) * 100 < 75
+            (
+                COUNT(*) FILTER (
+                    WHERE attendance_records.status = 'Present'
+                )::numeric
+                / COUNT(attendance_records.id)
+            ) * 100 < 75
+        ORDER BY subjects.subject_code
     """, (student_id,))
 
     records = cursor.fetchall()
@@ -1431,7 +1470,6 @@ def student_low_attendance():
 @app.route("/student_subjects")
 def student_subjects():
 
-    # Check whether the logged-in user is a student
     if not student_required():
         return "Access denied!"
 
@@ -1439,7 +1477,6 @@ def student_subjects():
 
     cursor = db.cursor()
 
-    # Get the logged-in student's department and year
     cursor.execute("""
         SELECT department, year
         FROM students
@@ -1455,10 +1492,6 @@ def student_subjects():
     department = student[0]
     year = student[1]
 
-    print("Student Department:", department)
-    print("Student Year:", year)
-
-    # Get subjects for the student's department and year
     cursor.execute("""
         SELECT
             subject_code,
@@ -1473,8 +1506,6 @@ def student_subjects():
     """, (department, year))
 
     records = cursor.fetchall()
-
-    print("Student Subjects:", records)
 
     cursor.close()
 
